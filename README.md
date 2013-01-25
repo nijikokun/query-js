@@ -8,11 +8,11 @@
 ### Building
 
 `query.build` *Builds parameter storage cache, ability to take custom parameters, name, and rebuild storage*
-- `param` `Object` **opts** *Optional options object*
-  - `option` `Boolean` **rebuild** *Forces parser to rebuild storage and decode cache objects*
-  - `option` `String` **query** *Custom query string*
-  - `option` `String` **name** *Parameter to look for in storage cache*
-- `return` *if `name` option is missing, it will return entire storage object*
+- **param** `Object` **opts** *Optional options object*
+  - **option** `Boolean` **rebuild** *Forces parser to rebuild storage and decode cache objects*
+  - **option** `String` **query** *Custom query string*
+  - **option** `String` **name** *Parameter to look for in storage cache*
+- **return** *if **name** option is missing, it will return entire storage object*
 
 ```javascript
   query.build();
