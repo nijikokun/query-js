@@ -2,6 +2,15 @@
 
  Iterates through a given, or current query string and 
  caches the results from both the parser and the decoder.
+ 
+## Features:
+
+1. Caching on both decoding and parameters
+2. Supports passing custom queries
+2. Supports Array / Object Parameters `user[]="jim"&user[]="bob"`
+3. Supports empty management `&&`
+4. Supports declaration paramaters `name&hello="world"`
+5. Clean and readable source
 
 ## Examples:
 
