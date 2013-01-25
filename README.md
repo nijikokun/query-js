@@ -9,7 +9,8 @@
 2. Supports passing custom queries
 2. Supports Array / Object Parameters `user[]="jim"&user[]="bob"`
 3. Supports empty management `&&`
-4. Supports declaration paramaters `name&hello="world"`
+4. Supports declaration parameters without values `name&hello="world"`
+5. Supports repeated parameters `param=1&param=2`
 5. Clean and readable source
 
 ## Examples:
