@@ -1,7 +1,6 @@
 # Query.js
 
- Iterates through a given, or current query string and 
- caches the results from both the parser and the decoder.
+ Small, compact, and efficient query string parser library that is packed with features and two layers of caching.
  
 ## Features:
 
