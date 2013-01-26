@@ -61,8 +61,11 @@
     if (!$self.built || opts.rebuild) {
       $self.queryString = typeof opts.query === 'string' ? opts.query : $self.getQueryString();
 
-      if ($self.queryString) {
+      if (typeof $self.queryString === 'string' && $self.queryString.length > 0) {
         var index, aname, pname;
+        
+        if ($self.queryString[0] === "?") 
+          $self.queryString = $self.queryString.substring(1);
 
         $self.store = {};
         $self.decodeStore = {};
