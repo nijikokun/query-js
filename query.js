@@ -62,7 +62,7 @@
       $self.queryString = typeof opts.query === 'string' ? opts.query : $self.getQueryString();
 
       if (typeof $self.queryString === 'string' && $self.queryString.length > 0) {
-        var index, aname, pname;
+        var index, aname, pname, $key, $value, $decodeKey, $decodeValue;
         
         if ($self.queryString[0] === "?") 
           $self.queryString = $self.queryString.substring(1);
@@ -71,20 +71,28 @@
         $self.decodeStore = {};
 
         while ($self.m = $self.re.exec($self.queryString)) {
+          $key = $self.m[1]; $value = $self.m[2];
+          $decodeKey = $self.decode($key); $decodeValue = $self.decode($value);
+
           if ($self.m[1].indexOf("[") === -1)
-            $self.store[$self.decode($self.m[1])] = $self.decode($self.m[2]);
+            if (!($decodeKey in $self.store))
+              $self.store[$decodeKey] = $decodeValue;
+            else if (typeof $self.store[$decodeKey] !== 'object')
+              $self.store[$decodeKey] = [ $self.store[$decodeKey], $decodeValue ];
+            else
+              Array.prototype.push.call($self.store[$decodeKey], $decodeValue);
           else {
-            index = $self.m[1].indexOf("[");
-            aname = $self.m[1].slice(index + 1, $self.m[1].indexOf("]", index));
-            pname = $self.decode($self.m[1].slice(0, index));
+            index = $key.indexOf("[");
+            aname = $self.decode($key.slice(index + 1, $key.indexOf("]", index)));
+            pname = $self.decode($key.slice(0, index));
 
             if (typeof $self.store[pname] !== "object") {
-              $self.store[$self.decode(pname)] = {};
-              $self.store[$self.decode(pname)].length = 0;
+              $self.store[pname] = {};
+              $self.store[pname].length = 0;
             }
 
-            if (aname) $self.store[$self.decode(pname)][$self.decode(aname)] = $self.decode($self.m[2]);
-            else Array.prototype.push.call($self.store[$self.decode(pname)], $self.decode($self.m[2]));
+            if (aname) $self.store[pname][aname] = $decodeValue;
+            else Array.prototype.push.call($self.store[pname], $decodeValue);
           }
         }
       } else return undefined;
