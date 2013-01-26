@@ -69,7 +69,7 @@
   query.build({ name: 'param', rebuild: true, query: 'param=not+again&timestamp=250826092386' });
 ```
 
-# Copyright & License
+## Copyright & License
 
   **The MIT License (MIT)**
 
