@@ -31,9 +31,15 @@ var query = (function () {
   $self.store = {};
   $self.decodeStore = {};
   $self.built = false;
-  $self.queryString = window.location.search.substring(1);
+  $self.queryString = undefined;
   $self.re = /([^&=]+)=([^&]*)/g;
   $self.m = null;
+
+  $self.getQueryString = function () {
+    var search = window.location.search.substring(1);
+    var hash = window.location.hash.split("?"); hash.shift();
+    return (search && search !== "") ? search : (hash.length > 0) ? hash.join("?") : undefined;
+  }
 
   $self.decode = function (str) {
     if (!$self.decodeStore[str])
@@ -49,31 +55,32 @@ var query = (function () {
 
   $self.build = function (opts) {
     if (!$self.built || opts.rebuild) {
-      var index, aname, pname;
+      $self.queryString = typeof opts.query === 'string' ? opts.query : $self.getQueryString();
 
-      $self.store = {};
-      $self.decodeStore = {};
-      $self.queryString = typeof opts.query === 'string' ? opts.query : window.location.search.substring(1);
+      if ($self.queryString) {
+        var index, aname, pname;
 
-      while ($self.m = $self.re.exec($self.queryString)) {
-        if ($self.m[1].indexOf("[") == "-1")
-          $self.store[$self.decode($self.m[1])] = $self.decode($self.m[2]);
-        else {
-          index = $self.m[1].indexOf("[");
-          aname = $self.m[1].slice(index + 1, $self.m[1].indexOf("]", index));
-          pname = $self.decode($self.m[1].slice(0, index));
+        $self.store = {};
+        $self.decodeStore = {};
 
-          if (typeof $self.store[pname] !== "object") {
-            $self.store[$self.decode(pname)] = {};
-            $self.store[$self.decode(pname)].length = 0;
+        while ($self.m = $self.re.exec($self.queryString)) {
+          if ($self.m[1].indexOf("[") === -1)
+            $self.store[$self.decode($self.m[1])] = $self.decode($self.m[2]);
+          else {
+            index = $self.m[1].indexOf("[");
+            aname = $self.m[1].slice(index + 1, $self.m[1].indexOf("]", index));
+            pname = $self.decode($self.m[1].slice(0, index));
+
+            if (typeof $self.store[pname] !== "object") {
+              $self.store[$self.decode(pname)] = {};
+              $self.store[$self.decode(pname)].length = 0;
+            }
+
+            if (aname) $self.store[$self.decode(pname)][$self.decode(aname)] = $self.decode($self.m[2]);
+            else Array.prototype.push.call($self.store[$self.decode(pname)], $self.decode($self.m[2]));
           }
-
-          if (aname)
-            $self.store[$self.decode(pname)][$self.decode(aname)] = $self.decode($self.m[2]);
-          else
-            Array.prototype.push.call($self.store[$self.decode(pname)], $self.decode($self.m[2]));
         }
-      }
+      } else return undefined;
 
       $self.built = true;
     }
