@@ -1,28 +1,28 @@
 // Query.js
 //
-// Iterates through a given, or current query string and 
+// Iterates through a given, or current query string and
 // caches the results from both the parser and the decoder.
 //
 // Examples:
 //
-//     // Build the current query string, returns entire object.
-//     query.build();
+//     // Parse the current query string, returns entire object.
+//     query.parse();
 //
-//     // Build and fetch specific name
-//     // assumes query.build was never ran.
+//     // Parses query string and fetch specific parameter assumes query.parse was never ran.
 //     query.get('param');
 //     query.get('anotherParam'); // This will be cached result.
 //
-//     // After it has been ran and you wish to rebuild?
-//     query.build({ rebuild: true });
+//     // After it has been ran and you wish to rebuild the cache?
+//     // Good for when the url may have changed or custom query.
+//     query.parse({ rebuild: true });
 //     query.get('param', true);
 //
 //     // Custom Query String?
-//     query.build({ rebuild: true, query: 'param=not+again&timestamp=250826092386' });
+//     query.parse({ rebuild: true, query: 'param=not+again&timestamp=250826092386' });
 //     query.get('param');
 //
-//     // Return param, with build, and custom query all in one go?
-//     query.build({ name: 'param', rebuild: true, query: 'param=not+again&timestamp=250826092386' });
+//     // Return param, with rebuilding of cache, and custom query all in one go?
+//     query.parse({ name: 'param', rebuild: true, query: 'param=not+again&timestamp=250826092386' });
 //
 // @author Nijiko Yonskai
 // @copyright 2013 Nijiko Yonskai
@@ -54,17 +54,17 @@
 
   $self.get = function (name, rebuild) {
     name = String(name).replace(/[.*+?|()\[\]{}\\]/g, '\\$&');
-    return $self.build({ name: name, rebuild: rebuild });
+    return $self.parse({ name: name, rebuild: rebuild });
   };
 
-  $self.build = function (opts) {
+  $self.parse = function (opts) {
     if (!$self.built || opts.rebuild) {
       $self.queryString = typeof opts.query === 'string' ? opts.query : $self.getQueryString();
 
       if (typeof $self.queryString === 'string' && $self.queryString.length > 0) {
         var index, aname, pname, $key, $value, $decodeKey, $decodeValue;
-        
-        if ($self.queryString[0] === "?") 
+
+        if ($self.queryString[0] === "?")
           $self.queryString = $self.queryString.substring(1);
 
         $self.store = {};
