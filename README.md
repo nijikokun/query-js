@@ -5,7 +5,8 @@
 ## Features:
 
 1. Caching on both decoding and parameters
-2. Supports passing custom queries
+2. Supports hash query string `#hello?page=3`
+2. Supports passing custom query strings
 2. Supports Array / Object Parameters `user[]="jim"&user[]="bob"`
 3. Supports empty management `&&`
 4. Supports declaration parameters without values `name&hello="world"`
