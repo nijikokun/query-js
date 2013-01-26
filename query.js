@@ -36,7 +36,7 @@
   $self.decodeStore = {};
   $self.built = false;
   $self.queryString = undefined;
-  $self.re = /([^&=]+)=([^&]*)/g;
+  $self.re = /([^&=]+)=?([^&]*)/g;
   $self.m = null;
 
   $self.getQueryString = function () {
