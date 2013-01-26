@@ -28,6 +28,8 @@
   query.build();
 ```
 
+  View example on jsfiddle: http://jsfiddle.net/xvd5d/1/
+
 ### Fetching Parameter
 
 `query.get` *Fetch parameter from cache, or build current page query string and return parameter*
@@ -40,6 +42,8 @@
   query.get('anotherParam'); // This will be cached result.
 ```
 
+  View example on jsfiddle: http://jsfiddle.net/xvd5d/2/
+
 ### Rebuilding
 
   Maybe you've already built and wish to rebuild, you can do this two different ways:
@@ -51,6 +55,8 @@
   // Second is through the sugar `get` method
   query.get('param', true);
 ```
+
+  View example on jsfiddle: http://jsfiddle.net/VbM7M/
 
 ### Custom Query String
 
@@ -68,6 +74,8 @@
 ```javascript
   query.build({ name: 'param', rebuild: true, query: 'param=not+again&timestamp=250826092386' });
 ```
+
+  View example on jsfiddle: http://jsfiddle.net/VbM7M/1/
 
 ## License
 
