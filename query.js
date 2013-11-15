@@ -1,3 +1,4 @@
+
 // Query.js
 //
 // Iterates through a given, or current query string and
@@ -27,9 +28,9 @@
 // @author Nijiko Yonskai
 // @copyright 2013 Nijiko Yonskai
 (function (name, definition, context) {
-  if (typeof context['module'] !== 'undefined' && context['module']['exports']) context['module']['exports'] = definition()
-  else if (typeof context['define'] !== 'undefined' && context['define'] === 'function' && context['define']['amd']) define(name, definition)
-  else context[name] = definition()
+  if (typeof context['module'] !== 'undefined' && context['module']['exports']) context['module']['exports'] = definition();
+  else if (typeof context['define'] !== 'undefined' && context['define'] === 'function' && context['define']['amd']) define(name, definition);
+  else context[name] = definition();
 })('query', function () {
   var $self = {};
   $self.store = {};
@@ -43,7 +44,7 @@
     var search = window.location.search.substring(1);
     var hash = window.location.hash.split("?"); hash.shift();
     return (search && search !== "") ? search : (hash.length > 0) ? hash.join("?") : undefined;
-  }
+  };
 
   $self.decode = function (str) {
     if (!$self.decodeStore[str])
