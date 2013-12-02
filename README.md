@@ -6,16 +6,28 @@
 
 1. Caching on both decoding and parameters
 2. Supports hash query string `#hello?page=3`
-2. Supports passing custom query strings
-2. Supports Array / Object Parameters `user[]="jim"&user[]="bob"`
-3. Supports empty management `&&`
-4. Supports declaration parameters without values `name&hello="world"`
-5. Supports repeated parameters `param=1&param=2`
-5. Clean and readable source
+3. Supports passing custom query strings
+4. Supports Array / Object Parameters `user[]="jim"&user[]="bob"`
+5. Supports empty management `&&`
+6. Supports declaration parameters without values `name&hello="world"`
+7. Supports repeated parameters `param=1&param=2`
+8. Clean and readable source
+9. Supports building queries using simple object notation.
 
 ## Examples:
 
 ### Building
+
+`query.build`
+- `data` `Object` Query Data in Object Notation.
+
+To create the query `?name=Query.js&tags=query&tags=string&tags=encode&tags=builder` we invoke `query.build` like so:
+
+```javascript
+query.build({ name: 'Query.js', tags: [ 'query', 'string', 'encode', 'builder' ]});
+```
+
+### Parsing
 
 `query.parse` *Parses current or given query string, building both the query and decoding cache objects.*
 - `param` `Object` **opts** *Optional options object*

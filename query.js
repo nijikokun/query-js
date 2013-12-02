@@ -1,10 +1,13 @@
-
 // Query.js
 //
 // Iterates through a given, or current query string and
 // caches the results from both the parser and the decoder.
 //
 // Examples:
+// 
+//     // Build Query String
+//     // ?name=Query.js&tags=query&tags=string&tags=encode&tags=builder
+//     query.build({ name: 'Query.js', tags: [ 'query', 'string', 'encode', 'builder' ]});
 //
 //     // Parse the current query string, returns entire object.
 //     query.parse();
@@ -25,6 +28,7 @@
 //     // Return param, with rebuilding of cache, and custom query all in one go?
 //     query.parse({ name: 'param', rebuild: true, query: 'param=not+again&timestamp=250826092386' });
 //
+// @version 0.0.2
 // @author Nijiko Yonskai
 // @copyright 2013 Nijiko Yonskai
 (function (name, definition, context) {
@@ -40,10 +44,50 @@
   $self.re = /([^&=]+)=?([^&]*)/g;
   $self.m = null;
 
+  $self.build = function (data, parent) {
+    if (Object.prototype.toString.call(data) !== "[object Object]") 
+      return "";
+
+    parent = parent || "";
+
+    var query = parent ? "" : "?"
+      , okey
+      , value
+      , i = 0;
+
+    for (var key in data) {
+      okey = parent ? parent + "[" + $self.encode(key) + "]" : $self.encode(key);
+
+      if (value = data[key]) {
+        if (Object.prototype.toString.call(value) === "[object Array]") {
+          for (i = 0, l = value.length; i < l; ++i) {
+            if (typeof value[i] === "object") query += $self.build(value[i], okey + "[" + i + "]");
+            else query += okey + "=" + $self.encode(value[i]) + "&";
+          }
+        } else if (Object.prototype.toString.call(value) === "[object Object]") {
+          for (i in value) {
+            if (typeof value[i] === "object") query += $self.build(value[i], okey + "[" + i + "]");
+            else query += okey + "[" + i + "]=" + $self.encode(value[i]) + "&";
+          }
+        } else {
+          query += okey + "=" + $self.encode(value.toString()) + "&";
+        }
+      } else {
+        query += okey + "&";
+      }
+    }
+
+    return query.substring(0, query.length - 1);
+  };
+
   $self.getQueryString = function () {
     var search = window.location.search.substring(1);
     var hash = window.location.hash.split("?"); hash.shift();
     return (search && search !== "") ? search : (hash.length > 0) ? hash.join("?") : undefined;
+  };
+
+  $self.encode = function (str) {
+    return encodeURIComponent(str.toString());
   };
 
   $self.decode = function (str) {
@@ -59,6 +103,8 @@
   };
 
   $self.parse = function (opts) {
+    opts = opts || {};
+
     if (!$self.built || opts.rebuild) {
       $self.queryString = typeof opts.query === 'string' ? opts.query : $self.getQueryString();
 
