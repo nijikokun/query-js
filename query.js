@@ -33,7 +33,7 @@
 // @copyright 2013 Nijiko Yonskai
 (function (name, definition, context) {
   if (typeof context['module'] !== 'undefined' && context['module']['exports']) context['module']['exports'] = definition();
-  else if (typeof context['define'] !== 'undefined' && context['define'] === 'function' && context['define']['amd']) define(name, definition);
+  else if (typeof context['define'] === 'function' && context['define']['amd']) define(definition);
   else context[name] = definition();
 })('query', function () {
   var $self = {};
